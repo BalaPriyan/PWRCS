@@ -8,7 +8,7 @@ async def register(request):
     data = await request.json()
     fullname = data.get('fullname')
     email = data.get('email')
-    password = data.gat('password')
+    password = data.get('password')
 
     if usrcolletion.find_one({"email":email}):
         return web.json_response({"error":"E-Mail Is Already Registered"}, status=400)
