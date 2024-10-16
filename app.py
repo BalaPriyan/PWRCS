@@ -3,6 +3,16 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import asyncio
 import websockets
+from passlib.context import CryptContext
+
+# Hashing System For Password
+pwd_cont = CryptContext(schemes=['bcrypt'], deprecated="auto")  # Text To Hash
+
+def verfiy_pwd(plain_pwd, hash_pwd):  # Verifying Password
+    return pwd_cont.verify(plain_pwd, hash_pwd)
+
+def verify_hash(password):  # Hashing The Password
+    return pwd_cont.hash(password)
 #import object_detection  # Import your plastic detection script
 
 app = Flask(__name__)
@@ -66,7 +76,8 @@ def register():
         return jsonify({'status': 'error', 'message': 'User already exists'}), 400
 
     # Create a new user
-    users.insert_one({'fullname': fullname ,'email': email, 'password': password, 'credits': 0, 'history': []})
+    hashpwd = verify_hash(password)  # Corrected variable name
+    users.insert_one({'fullname': fullname, 'email': email, 'password': hashpwd, 'credits': 0, 'history': []})
     return jsonify({'status': 'success', 'message': 'User registered successfully'}), 201
 
 @app.route('/login', methods=['POST'])
@@ -75,8 +86,8 @@ def login():
     email = data['email']
     password = data['password']
 
-    user = users.find_one({'email': email, 'password': password})
-    if user:
+    user = users.find_one({'email': email})
+    if user and verfiy_pwd(password, user['password']):  # Verifying hashed password
         return jsonify({'status': 'success', 'credits': user['credits'], 'history': user['history']}), 200
     return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 400
 
