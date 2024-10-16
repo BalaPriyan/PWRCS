@@ -84,6 +84,6 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
 
 # Start the WebSocket server
-start_server = websockets.serve(detect_plastic, "0.0.0.0", 5678)
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+#start_server = websockets.serve(detect_plastic, "0.0.0.0", 5678)
+#asyncio.get_event_loop().run_until_complete(start_server)
+#asyncio.get_event_loop().run_forever()
