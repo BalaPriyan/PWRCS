@@ -57,6 +57,7 @@ def home():
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
+    fullname = data['fullname']
     email = data['email']
     password = data['password']
 
@@ -65,7 +66,7 @@ def register():
         return jsonify({'status': 'error', 'message': 'User already exists'}), 400
 
     # Create a new user
-    users.insert_one({'email': email, 'password': password, 'credits': 0, 'history': []})
+    users.insert_one({'fullname': fullname ,'email': email, 'password': password, 'credits': 0, 'history': []})
     return jsonify({'status': 'success', 'message': 'User registered successfully'}), 201
 
 @app.route('/login', methods=['POST'])
