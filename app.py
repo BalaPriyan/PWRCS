@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 # MongoDB setup
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://fino:fino@cluster0.ko0stef.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client['pwrcs']
 users = db['users']
 
