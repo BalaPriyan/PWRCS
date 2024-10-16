@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from pymongo import MongoClient
 import asyncio
@@ -12,6 +12,16 @@ CORS(app)  # Allow cross-origin requests
 client = MongoClient("mongodb+srv://fino:fino@cluster0.ko0stef.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client['pwrcs']
 users = db['users']
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+
+
+
 
 # WebSocket server
 #async def detect_plastic(websocket, path):
