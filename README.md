@@ -27,10 +27,15 @@
 - Helps keep the **environment clean** by reducing plastic waste.
 - Users get **rewards** for recycling.
 
+#### **Technologies Used:**
+- **Frontend**: Flutter
+- **Backend**: Python
+- **Database**: MongoDB
+
+
+
 #### **Cost (Approximate):**
 - **Machine Parts**: ₹15,000 - ₹25,000
 - **App Development**: ₹50,000 - ₹1,50,000
 
 ---
-
-This version is written in simple, easy-to-understand words for better clarity in your classroom explanation.
