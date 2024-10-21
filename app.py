@@ -1,9 +1,16 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from pymongo import MongoClient
-import asyncio
-import websockets
 from passlib.context import CryptContext
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
+# Flask app setup
+app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests
+
+# Secret key for JWT
+app.config['JWT_SECRET_KEY'] = 'asdfghjklpoiuytrewqzxcvbnm'  # Change this to a random secret key
+jwt = JWTManager(app)
 
 # Hashing System For Password
 pwd_cont = CryptContext(schemes=['bcrypt'], deprecated="auto")  # Text To Hash
@@ -13,57 +20,17 @@ def verfiy_pwd(plain_pwd, hash_pwd):  # Verifying Password
 
 def verify_hash(password):  # Hashing The Password
     return pwd_cont.hash(password)
-#import object_detection  # Import your plastic detection script
-
-app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests
 
 # MongoDB setup
 client = MongoClient("mongodb+srv://fino:fino@cluster0.ko0stef.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client['pwrcs']
 users = db['users']
 
-
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
-
-
-
-
-# WebSocket server
-#async def detect_plastic(websocket, path):
- #   user_data = await websocket.recv()
- #   user_data = json.loads(user_data)
- #   email = user_data['email']
-
-    # Run the object detection to detect plastic type
-#    plastic_type = object_detection.detect()
-#    credits = assign_credits(plastic_type)
-
-    # Send plastic detection result and credits to the mobile app
-#    await websocket.send(json.dumps({
-#        'plastic_type': plastic_type,
-#        'credits': credits
-#    }))
-
-    # Wait for the 'Finish' signal from the mobile app
-#    finish_signal = await websocket.recv()
-#    if finish_signal == 'finish':
-        # Update user credits in MongoDB
-#        users.update_one(
-#            {'email': email},
-#            {'$inc': {'credits': credits}, '$push': {'history': {'plastic_type': plastic_type, 'credits': credits}}}
-#        )
-#        await websocket.send(json.dumps({'status': 'success', 'message': 'Credits updated'}))
-
-#def assign_credits(plastic_type):
-#    credit_map = {'PET': 10, 'HDPE': 15, 'PVC': 5}
- #   return credit_map.get(plastic_type, 0)
-
-# REST API for user registration and login
+# REST API for user registration
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
@@ -76,10 +43,11 @@ def register():
         return jsonify({'status': 'error', 'message': 'User already exists'}), 400
 
     # Create a new user
-    hashpwd = verify_hash(password)  # Corrected variable name
+    hashpwd = verify_hash(password)  # Hash the password
     users.insert_one({'fullname': fullname, 'email': email, 'password': hashpwd, 'credits': 0, 'history': []})
     return jsonify({'status': 'success', 'message': 'User registered successfully'}), 201
 
+# REST API for user login
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -88,14 +56,21 @@ def login():
 
     user = users.find_one({'email': email})
     if user and verfiy_pwd(password, user['password']):  # Verifying hashed password
-        return jsonify({'status': 'success', 'credits': user['credits'], 'history': user['history']}), 200
+        access_token = create_access_token(identity={'email': email})  # Generate JWT token
+        return jsonify({'status': 'success', 'access_token': access_token}), 200
     return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 400
+
+# Protected route to retrieve user data (requires a valid JWT)
+@app.route('/getUserData', methods=['POST'])
+@jwt_required()  # JWT protection
+def get_user_data():
+    current_user = get_jwt_identity()  # Get the current user's identity from JWT
+    user = users.find_one({'email': current_user['email']}, {'_id': 0})  # Exclude '_id' field from the response
+
+    if user:
+        return jsonify(user), 200  # Return user data as JSON
+    return jsonify({'status': 'error', 'message': 'User not found'}), 404
 
 # Start the Flask server
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
-
-# Start the WebSocket server
-#start_server = websockets.serve(detect_plastic, "0.0.0.0", 5678)
-#asyncio.get_event_loop().run_until_complete(start_server)
-#asyncio.get_event_loop().run_forever()
