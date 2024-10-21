@@ -1,39 +1,36 @@
 ### **Plastic Waste Recycling Credit System**
 
 #### **Overview:**
-- The system encourages recycling by offering **credits** to users for depositing plastic waste in a machine.
-- These credits can be redeemed as **discount coupons** through a mobile app.
+- This system helps people recycle plastic and rewards them with **credits**.
+- The more plastic you recycle, the more credits you earn.
+- These credits can be used as **discounts** at certain stores.
 
 #### **How it Works:**
 1. **Plastic Collection Machine:**
-   - Users drop plastic into the machine.
-   - The machine scans the plastic type, weighs it, and calculates **credits** based on recyclability.
-   - A **QR code** on the screen connects the machine to the user's app.
+   - You put plastic into the machine.
+   - The machine checks the type of plastic and its weight.
+   - The machine shows a **QR code** that you scan with your mobile app to connect.
    
 2. **Mobile App:**
-   - Users scan the machine's QR code to link their account.
-   - The machine detects the plastic type and assigns credits, which are transferred to the user’s app.
-   - Users can redeem their credits as **discount coupons** for partner stores.
+   - You scan the QR code on the machine to link your account.
+   - The machine gives you **credits** based on the plastic you put in.
+   - The credits are sent to your app, which you can use to get **discounts**.
 
-3. **Cloud Backend:**
-   - Manages user data and credits.
-   - Provides real-time communication between the machine and the app.
-
-#### **Materials:**
-- **Raspberry Pi** (for machine control)
-- **Camera** (for plastic detection)
-- **Load cell** (for weighing plastic)
-- **QR display** (for user connection)
+#### **Materials Needed:**
+- **Computer (Raspberry Pi)** to control the machine.
+- **Camera** to recognize the type of plastic.
+- **Weight Sensor** to measure how much plastic you put in.
+- **Screen** to show the QR code.
 
 #### **Benefits:**
-- Encourages **recycling** by offering rewards.
-- Helps reduce **plastic waste** and **environmental pollution**.
-- Provides users with **financial incentives** through discount coupons.
+- This system encourages people to **recycle** plastic.
+- Helps keep the **environment clean** by reducing plastic waste.
+- Users get **rewards** for recycling.
 
-#### **Cost (Approx.):**
-- **Hardware**: ₹15,000 - ₹25,000
-- **App Development**: ₹50,000 - ₹1,50,000 (if outsourced)
+#### **Cost (Approximate):**
+- **Machine Parts**: ₹15,000 - ₹25,000
+- **App Development**: ₹50,000 - ₹1,50,000
 
 ---
 
-This concise version highlights the essential points, making it easier for a quick classroom presentation!
+This version is written in simple, easy-to-understand words for better clarity in your classroom explanation.
