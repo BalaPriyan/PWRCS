@@ -3,3 +3,6 @@ Flask-Cors
 pymongo
 websockets
 passlib
+PyJWT
+dnspython
+Werkzeug
