@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <button id="generate-qr">Generate QR Code</button>
+    <div id="qr-container" style="margin-top: 20px;">
+        <img id="qr-code" src="" alt="QR Code" style="display: none;"/>
+    </div>
+
+    <script>
+        document.getElementById('generate-qr').addEventListener('click', function() {
+            fetch('/generate_qr')
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(imageBlob => {
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    const qrCodeImage = document.getElementById('qr-code');
+                    qrCodeImage.src = imageUrl; // Set the src to the blob URL
+                    qrCodeImage.style.display = 'block'; // Show the image
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        });
+    </script>
+</body>
+</html>

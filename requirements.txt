@@ -1,0 +1,11 @@
+Flask
+Flask-Cors
+Flask-JWT-Extended
+pymongo
+websockets
+passlib
+PyJWT
+dnspython
+Werkzeug
+python-dotenv
+flask-bcrypt
